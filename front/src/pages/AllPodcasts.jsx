@@ -26,6 +26,7 @@ const AllPodcasts = () => {
     setCurrentPage,
     filters,
     setFilters,
+    toggleFavorite,
   } = usePodcasts(
     {
       view: "all",
@@ -115,6 +116,7 @@ const AllPodcasts = () => {
                     <PodcastCard
                       podcast={podcast}
                       user={user}
+                      onToggleFavorite={toggleFavorite}
                     />
                   </Link>
                 ))}

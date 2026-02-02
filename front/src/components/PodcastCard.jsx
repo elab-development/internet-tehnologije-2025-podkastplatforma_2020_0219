@@ -1,6 +1,6 @@
 import React from "react";
 
-const PodcastCard = ({ podcast, user }) => {
+const PodcastCard = ({ podcast, user, onToggleFavorite }) => {
   const {
     id,
     naslov,
@@ -9,11 +9,19 @@ const PodcastCard = ({ podcast, user }) => {
     kategorija,
     emisije,
     autori,
+    omiljeni
   } = podcast;
 
   const autorIme =
     autori && autori.length > 0 ? autori[0].korisnicko_ime : "Nepoznat autor";
   const fallbackImage = "/default-image.jpg";
+
+   const handleFavoriteClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    onToggleFavorite(id);
+  };
+
 
   return (
     <div className="group bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col h-full">
@@ -33,7 +41,31 @@ const PodcastCard = ({ podcast, user }) => {
             {kategorija?.naziv || "Opšte"}
           </span>
         </div>
+            {user.role === "gledalac" && (
+          <button
+            onClick={handleFavoriteClick}
+            className="absolute top-4 right-4 p-2 bg-white/90 backdrop-blur-md rounded-full shadow-sm hover:scale-110 transition-all"
+          >
+            <svg
+              className={`w-5 h-5 transition-colors ${
+                omiljeni ? "fill-red-500 text-red-500" : "text-gray-400"
+              }`}
+              fill={omiljeni ? "currentColor" : "none"}
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+              />
+            </svg>
+          </button>
+        )}
       </div>
+      
+
 
       <div className="p-6 flex flex-col flex-grow">
         <div className="mb-3">
