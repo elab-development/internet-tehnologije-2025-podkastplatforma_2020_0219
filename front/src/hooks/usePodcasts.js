@@ -9,7 +9,11 @@ export const usePodcasts = (initialFilters, user) => {
   const [filters, setFilters] = useState(initialFilters);
 
   const getFetchUrl = () => {
-   
+    if (filters.view === "personal") {
+      return user.role === "autor"
+        ? "/users/podcasti"
+        : "/users/favorites/podcasti";
+    }
     return "/podcasti";
   };
 

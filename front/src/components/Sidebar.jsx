@@ -12,14 +12,37 @@ const Sidebar = ({
     setFilters((prev) => ({ ...prev, [key]: value }));
   };
 
-  console.log("Filters in Sidebar:", filters);
   const isAuthorViewingSelf =
     userRole === "autor" && filters.view === "personal";
 
   return (
     <aside className="w-full md:w-64 bg-white min-h-screen p-6 border-r border-gray-100 hidden md:block">
       <div className="space-y-8">
+         {userRole !== "administrator" && (
+          <div>
+            <h3 className="text-xs font-black text-gray-400 uppercase tracking-wider mb-4">
+              Prikaz
+            </h3>
 
+            <FormInput
+              label={
+                userRole === "autor" ? "Samo moji podkasti" : "Samo omiljeni"
+              }
+              type="toggle"
+              checked={filters.view === "personal"}
+              onChange={(e) => {
+                const isChecked = e.target.checked;
+                handleFilterChange(
+                  "view",
+                  e.target.checked ? "personal" : "all"
+                );
+                if (isChecked && userRole === "autor") {
+                  handleFilterChange("idAutora", null);
+                }
+              }}
+            />
+          </div>
+        )}
 
         <div
           className={`transition-all duration-300 ${
