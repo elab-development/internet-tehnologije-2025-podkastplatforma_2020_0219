@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import AllPodcasts from "./pages/AllPodcasts";
+import PodcastDetails from "./pages/PodcastDetails";
 
 
 function App() {
@@ -11,7 +12,8 @@ function App() {
         <Routes>
           <Route index element={<Login />} />
           <Route path="/register" element={<Register />} />
-            <Route path="/podcasts" element={<AllPodcasts />} />
+          <Route path="/podcasts" element={<AllPodcasts />} />
+          <Route path="/podcasts/:id" element={<PodcastDetails />} />
           <Route path='*' element={<Login />} />
         </Routes>
       </div>
