@@ -62,6 +62,9 @@ const AllPodcasts = () => {
     const fetchAuthors = async () => {
       try {
         let url = "/users/autori";
+           if (user.role === "gledalac" && filters.view === "personal") {
+          url = "/users/autori/favorites";
+        }
 
      
         const authRes = await api.get(url);
