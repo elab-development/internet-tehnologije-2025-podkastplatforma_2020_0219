@@ -110,4 +110,30 @@
     }
 
      
+    public function getUsersOfFavoritesPodcasts()
+    {
+        try {
+           
+            $user = Auth::user();
+    
+         
+            $omiljeniPodkasti = $user->listaOmiljenihPodkasta;
+    
+            if ($omiljeniPodkasti->isEmpty()) {
+                return response()->json(['message' => 'Nemate nijedan omiljeni podkast.'], 200);
+            }
+    
+           
+            $autori = $omiljeniPodkasti
+                ->pluck('autori') 
+                ->flatten() 
+                ->unique('id') 
+                ->values(); 
+    
+            return UserResource::collection($autori);
+    
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Došlo je do greške pri dohvatanju autora iz omiljenih podkasta.'], 500);
+        }
+    }
  }
