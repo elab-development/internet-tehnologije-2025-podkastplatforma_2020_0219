@@ -22,6 +22,8 @@ Route::middleware('auth:sanctum')->group(function () {
       Route::post('users/favorites/{id}',[UserController::class,'addToFavorites']);
       Route::delete('users/favorites/{id}',[UserController::class,'removeFavorite']);
       Route::get('users/autori/favorites',[UserController::class,'getUsersOfFavoritesPodcasts']);
+      Route::get('podcasti/{id}',[PodcastController::class,'show']);
+
 
 
 });

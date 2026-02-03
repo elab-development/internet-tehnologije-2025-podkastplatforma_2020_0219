@@ -62,6 +62,27 @@ class PodcastController extends Controller
 }
 
 
+
+    public function show($id)
+    {
+        try{
+            $podkast = Podcast::findOrFail($id);
+            Log::info($podkast);
+            return new PodcastResource($podkast);
+        }
+        catch (\Exception $e) {
+          
+            return response()->json([
+                'message' => 'Došlo je do greške prilikom dohvatanja podkasta.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+        
+      
+    }
+
+
+
    
     
   
