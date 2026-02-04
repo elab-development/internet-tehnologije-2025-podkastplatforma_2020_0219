@@ -83,6 +83,34 @@ class PodcastController extends Controller
 
 
 
+       public function destroy($id)
+    {
+        try {
+           
+    
+            $podcast = Podcast::findOrFail($id);
+            $user = Auth::user();
+    
+            if ($podcast->logo_putanja) {
+                $putanjaBanera = public_path($podcast->logo_putanja);
+                $direktorijum = dirname($putanjaBanera);
+                if (File::exists($direktorijum)) {
+                    File::deleteDirectory($direktorijum);
+                }
+            }
+    
+          
+            $podcast->delete();
+    
+            return response()->json(['message' => 'Podcast i svi povezani resursi su uspešno obrisani.'], 200);
+        } catch (\Exception $e) {
+            Log::error('Greška prilikom brisanja podcasta: ' . $e->getMessage());
+            return response()->json(['message' => 'Došlo je do greške prilikom brisanja podcasta.', 'error' => $e->getMessage()], 500);
+        }
+    }
+
+
+
    
     
   
