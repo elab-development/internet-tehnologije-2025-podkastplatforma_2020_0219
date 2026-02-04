@@ -13,7 +13,10 @@ const PodcastDetails = () => {
   const [loading, setLoading] = useState(true);
 
   const fallbackImage = "/default-image.jpg";
-
+ const user = {
+    role: localStorage.getItem("role"),
+    username: localStorage.getItem("username"),
+  };
   useEffect(() => {
     const fetchPodcast = async () => {
       try {
@@ -28,7 +31,23 @@ const PodcastDetails = () => {
     fetchPodcast();
   }, [id]);
 
- 
+   const isOwner = podcast?.autori?.some(
+    (a) => a.korisnicko_ime === user.username
+  );
+  const canDelete = user.role === "administrator" || isOwner;
+
+  const handleDelete = async () => {
+    if (
+      window.confirm("Da li ste sigurni da želite da obrišete ovaj podkast?")
+    ) {
+      try {
+        await api.delete(`/podcasti/${id}`);
+        navigate("/podcasts");
+      } catch (err) {
+        alert("Došlo je do greške prilikom brisanja.");
+      }
+    }
+  };
   
 
 
@@ -103,7 +122,27 @@ const PodcastDetails = () => {
               </p>
             </div>
 
-           
+            {canDelete && (
+              <button
+                onClick={handleDelete}
+                className="mb-4 px-6 py-3 bg-red-600/20 hover:bg-red-600 border border-red-600/50 text-red-100 rounded-2xl backdrop-blur-md transition-all flex items-center gap-2 font-bold group"
+              >
+                <svg
+                  className="w-5 h-5 text-red-400 group-hover:text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                  />
+                </svg>
+                Obriši podkast
+              </button>
+            )}
           </div>
         </div>
       </div>
