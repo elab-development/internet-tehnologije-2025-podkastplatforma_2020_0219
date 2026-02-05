@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PodcastController;
 use App\Http\Controllers\KategorijaController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\EmisijaController;
 
 
 Route::post('/register', [AuthController::class, 'register']);
@@ -24,7 +25,8 @@ Route::middleware('auth:sanctum')->group(function () {
       Route::get('users/autori/favorites',[UserController::class,'getUsersOfFavoritesPodcasts']);
       Route::get('podcasti/{id}',[PodcastController::class,'show']);
       Route::delete('/podcasti/{id}',[PodcastController::class,'destroy']);
-
+      Route::get('emisije/{id}',[EmisijaController::class,'show']);
+      Route::get('/emisije/file/{id}', [EmisijaController::class, 'vratiFile'])->name('emisija.file');
 
 
 });

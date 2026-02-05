@@ -19,6 +19,7 @@ class EmisijaResource extends JsonResource
             'naslov' => $this->naslov,
             'datum' => $this->datum->toIso8601String(),
             'tip'=>$this->tip,
+            'file' => route('emisija.file', ['id' => $this->id]),
           
         ];
     }
