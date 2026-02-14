@@ -28,6 +28,7 @@ Route::middleware('auth:sanctum')->group(function () {
       Route::get('emisije/{id}',[EmisijaController::class,'show']);
       Route::get('/emisije/file/{id}', [EmisijaController::class, 'vratiFile'])->name('emisija.file');
       Route::post('podcasti',[PodcastController::class,'store']);
+      Route::put('podcasti/{id}',[PodcastController::class,'update']);
 
 
 });

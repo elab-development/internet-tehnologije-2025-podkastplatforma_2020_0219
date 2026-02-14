@@ -160,6 +160,51 @@ private function uploadLogo($file, $naslov)
     return Storage::disk('s3')->url($pathFile);
 }
 
+
+public function update(Request $request, $podcastId)
+{
+  
+    try {
+        $request->validate([
+            'naslov' => 'required|string',
+            'kratak_sadrzaj' => 'required|string',
+            'kategorija_id' => 'required|exists:kategorije,id',
+            'logo_putanja' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',  
+        ]);
+
+        $podcast = Podcast::findOrFail($podcastId);
+
+       
+        $podcast->naslov = $request->naslov;
+        $podcast->kratak_sadrzaj = $request->kratak_sadrzaj;
+        $podcast->kategorija_id = $request->kategorija_id;
+
+        
+       if ($request->hasFile('logo_putanja')) {
+             if ($podcast->logo_putanja) {
+                 $staraPutanja = str_replace(env('AWS_URL') . '/', '', $podcast->logo_putanja);
+        
+        if (Storage::disk('s3')->exists($staraPutanja)) {
+            Storage::disk('s3')->delete($staraPutanja);
+            }
+    }
+    $podcast->logo_putanja = $this->uploadLogo($request->file('logo_putanja'), $request->naslov);
+}
+
+       
+        $podcast->save();
+
+        return response()->json([
+            'message' => 'Podkast je uspešno izmenjen!',
+            'data' => $podcast
+        ], 200);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'message' => 'Došlo je do greške prilikom ažuriranja podkasta. ' . $e->getMessage()
+        ], 500);
+    }
+}
    
     
   
