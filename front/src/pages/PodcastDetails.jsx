@@ -123,6 +123,7 @@ const PodcastDetails = () => {
             </div>
 
             {canDelete && (
+              <>
               <button
                 onClick={handleDelete}
                 className="mb-4 px-6 py-3 bg-red-600/20 hover:bg-red-600 border border-red-600/50 text-red-100 rounded-2xl backdrop-blur-md transition-all flex items-center gap-2 font-bold group"
@@ -142,7 +143,15 @@ const PodcastDetails = () => {
                 </svg>
                 Obriši podkast
               </button>
+               <button
+                  onClick={() => navigate(`/podcasts/${id}/update`)}
+                  className="mb-4 px-6 py-3 bg-amber-500/10 hover:bg-amber-500 border border-amber-500/40 text-amber-200 hover:text-white rounded-2xl backdrop-blur-md transition-all duration-300 flex items-center gap-2 font-bold group shadow-[0_0_15px_rgba(245,158,11,0.1)] hover:shadow-[0_0_20px_rgba(245,158,11,0.4)]"
+                >
+                  Izmeni podkast
+                </button>
+                </>
             )}
+            
           </div>
         </div>
       </div>

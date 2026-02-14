@@ -6,7 +6,14 @@ export default function Navigation() {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
+  const userRole = localStorage.getItem("role");
+
   const linksToDisplay = [{ name: "Svi Podkasti", path: "/podcasts" }];
+
+  if (userRole === "autor") {
+    linksToDisplay.push({ name: "Kreiraj Podkast", path: "/create-podcast" });
+  }
+
 
   const handleLogoutAction = async () => {
     try {
@@ -26,7 +33,7 @@ export default function Navigation() {
     "text-gray-600 hover:text-indigo-600 transition-colors font-medium";
 
   return (
-    <nav className="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-gray-100">
+    <nav className="bg-white backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-18 items-center py-4">
           <div className="flex-shrink-0 flex items-center">
@@ -57,7 +64,6 @@ export default function Navigation() {
               Odjavi se
             </button>
           </div>
-
           <div className="md:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
