@@ -10,9 +10,19 @@ export default function Navigation() {
 
   const linksToDisplay = [{ name: "Svi Podkasti", path: "/podcasts" }];
 
+
+  if (userRole === "administrator") {
+    linksToDisplay.push(
+   
+      { name: "Kategorije", path: "/categories" }
+  
+    );
+  }
+
   if (userRole === "autor") {
     linksToDisplay.push({ name: "Kreiraj Podkast", path: "/create-podcast" });
   }
+
 
 
   const handleLogoutAction = async () => {
