@@ -14,7 +14,8 @@ export default function Navigation() {
   if (userRole === "administrator") {
     linksToDisplay.push(
    
-      { name: "Kategorije", path: "/categories" }
+      { name: "Kategorije", path: "/categories" },
+       { name: "Statistike", path: "/statistics" },
   
     );
   }

@@ -6,6 +6,7 @@ import PodcastDetails from "./pages/PodcastDetails";
 import EpisodeDetails from "./pages/EpisodeDetails";
 import PodcastForm from "./pages/PodcastForm";
 import CategoryManagement from "./pages/CategoryManagement";
+import Statistics from "./pages/Statistics";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path="/create-podcast" element={<PodcastForm />} />
           <Route path="/categories" element={<CategoryManagement />} />
           <Route path="*" element={<Login />} />
+          <Route path="/statistics" element={<Statistics />} />
         </Routes>
       </div>
     </Router>
