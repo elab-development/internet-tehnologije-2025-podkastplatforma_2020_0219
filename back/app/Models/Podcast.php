@@ -30,4 +30,10 @@ class Podcast extends Model
     {
         return $this->hasMany(Emisija::class);
     }
+
+
+    public function omiljenOdStraneKorisnika()
+    {
+        return $this->belongsToMany(User::class, 'omiljeni_podkasti');
+    }
 }
