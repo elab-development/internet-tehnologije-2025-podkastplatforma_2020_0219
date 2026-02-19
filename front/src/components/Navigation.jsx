@@ -13,7 +13,7 @@ export default function Navigation() {
 
   if (userRole === "administrator") {
     linksToDisplay.push(
-   
+    { name: "Korisnici", path: "/users" },
       { name: "Kategorije", path: "/categories" },
        { name: "Statistike", path: "/statistics" },
   

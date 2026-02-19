@@ -7,6 +7,7 @@ import EpisodeDetails from "./pages/EpisodeDetails";
 import PodcastForm from "./pages/PodcastForm";
 import CategoryManagement from "./pages/CategoryManagement";
 import Statistics from "./pages/Statistics";
+import UserManagement from "./pages/UserManagement";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route path="/categories" element={<CategoryManagement />} />
           <Route path="*" element={<Login />} />
           <Route path="/statistics" element={<Statistics />} />
+           <Route path="/users" element={<UserManagement />} />
         </Routes>
       </div>
     </Router>
