@@ -32,6 +32,8 @@ Route::middleware('auth:sanctum')->group(function () {
       Route::put('podcasti/{id}',[PodcastController::class,'update']);
       Route::post('kategorije',[KategorijaController::class,'store']);
       Route::get('statistika',[StatistikaController::class,'konacnaStatistika']);
-
+     Route::get('/users', [UserController::class, 'index']);
+      Route::delete('users/{id}',[UserController::class,'destroy']);
+     
 
 });

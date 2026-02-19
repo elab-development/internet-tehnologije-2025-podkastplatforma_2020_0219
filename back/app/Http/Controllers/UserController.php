@@ -136,4 +136,51 @@
             return response()->json(['message' => 'Došlo je do greške pri dohvatanju autora iz omiljenih podkasta.'], 500);
         }
     }
+
+    
+     public function index(Request $request)
+     {
+        
+        try {
+           
+            return UserResource::collection(User::all());
+
+        } catch (Exception $e) {
+           
+            return response()->json([
+                'message' => 'Došlo je do greške prilikom učitavanja korisnika.',
+                'error' => $e->getMessage()
+            ], 500); 
+        }
+    }
+
+
+    
+    public function destroy($userId)
+    {
+        try {
+            
+            $user = User::findOrFail($userId);
+            foreach ($user->mojiPodkasti as $podcast) {
+              
+                if ($podcast->autori()->count() == 1) {
+                    $podcast->delete();
+                } 
+            }
+    
+            $user->delete();
+           
+          
+          
+            return response()->json([
+                'message' => 'Korisnik uspešno obrisan.'
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Došlo je do greške prilikom brisanja korisnika.',
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+    }
  }
