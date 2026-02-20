@@ -34,6 +34,7 @@ Route::middleware('auth:sanctum')->group(function () {
       Route::get('statistika',[StatistikaController::class,'konacnaStatistika']);
      Route::get('/users', [UserController::class, 'index']);
       Route::delete('users/{id}',[UserController::class,'destroy']);
+      Route::post('emisije',[EmisijaController::class,'store']);
      
 
 });
