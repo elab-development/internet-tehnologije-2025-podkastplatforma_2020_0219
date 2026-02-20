@@ -27,33 +27,60 @@ class EmisijaController extends Controller
     }
 
 
-
- public function vratiFile($id)
+        public function store(Request $request)
     {
-        try {
-           
-            $emisija = Emisija::findOrFail($id);
-            $relativePath = $emisija->file;
-            $absolutePath = public_path($relativePath); 
-
+         try {
+        $request->validate([
+            'naslov' => 'required|string',
+            'podcast_id' => 'required|exists:podkasti,id',
+             'file' => 'required|file'
+          
+        ]);
     
-            if (!File::exists($absolutePath)) {
-                return response()->json(['error' => 'Fajl ne postoji'], 404);
-            }
+        $podcast = Podcast::findOrFail($request->podcast_id);
+        $fajl = $this->uploadFajl($request->file('file'), $request->naslov,$podcast);
+        $emisija = Emisija::create([
+            'naslov' => $request->naslov,
+            'datum' =>now(),
+            'podcast_id' => $request->podcast_id,
+            'file'=>$fajl,
+            'tip'=>$request->file('file')->getMimeType()
+        ]);
     
-           
-            return response()->stream(function () use ($absolutePath) {
-                readfile($absolutePath);
-            }, 200, [
-                'Content-Type' => $emisija->tip,
-                'Accept-Ranges' => 'bytes',
-                'Content-Length' => filesize($absolutePath),
-            ]);
-        } catch (\Exception $e) {
-            Log::error('Greška prilikom učitavanja file: ' . $e->getMessage());
-            return response()->json(['error' => 'Došlo je do greške prilikom učitavanja file.'], 500);
-        }
+        
+        return response()->json(['message' => 'Epizoda i fajl su uspešno sačuvani', 'epizoda' => $emisija], 201);
+         } catch (\Exception $e) {
+            Log::error('Greška prilikom čuvanja emisije: ' . $e->getMessage());
+            return response()->json(['message' => 'Došlo je do greške prilikom čuvanja emisije.', 'error' => $e->getMessage()], 500);
+         }
     }
+    
+    private function uploadFajl($file, $naziv, $podcast)
+{
+    $originalExtension = $file->getClientOriginalExtension(); 
+    $sanitizedPodcastNaslov = preg_replace('/[^a-zA-Z0-9_-]/', '_', $podcast->naslov);
+    $sanitizedFajlNaziv = preg_replace('/[^a-zA-Z0-9_-]/', '_', $naziv);
+    $filename = $sanitizedFajlNaziv . '.' . $originalExtension;
+    $path = $sanitizedPodcastNaslov . '/' . $sanitizedFajlNaziv;
+    $pathFile = $file->storeAs($path, $filename, "s3");
+    return Storage::disk('s3')->url($pathFile); 
+}
+    
+public function vratiFile($id)
+{
+    try {
+        $emisija = Emisija::findOrFail($id);
+        if (filter_var($emisija->file, FILTER_VALIDATE_URL)) {
+             return redirect($emisija->file);
+        }
+
+        return response()->json(['error' => 'Fajl ne postoji ili nije validan URL'], 404);
+
+    } catch (\Exception $e) {
+        Log::error('Greška prilikom učitavanja file: ' . $e->getMessage());
+        return response()->json(['error' => 'Došlo je do greške.'], 500);
+    }
+}
 
 
 }

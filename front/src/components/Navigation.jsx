@@ -13,14 +13,19 @@ export default function Navigation() {
 
   if (userRole === "administrator") {
     linksToDisplay.push(
-   
-      { name: "Kategorije", path: "/categories" }
+    { name: "Korisnici", path: "/users" },
+      { name: "Kategorije", path: "/categories" },
+       { name: "Statistike", path: "/statistics" },
   
     );
   }
 
   if (userRole === "autor") {
     linksToDisplay.push({ name: "Kreiraj Podkast", path: "/create-podcast" });
+  }
+
+   if (userRole === "gledalac") {
+    linksToDisplay.push({ name: "Spotify", path: "/spotify" });
   }
 
 
