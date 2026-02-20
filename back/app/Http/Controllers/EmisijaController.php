@@ -66,33 +66,21 @@ class EmisijaController extends Controller
     return Storage::disk('s3')->url($pathFile); 
 }
     
-
- public function vratiFile($id)
-    {
-        try {
-           
-            $emisija = Emisija::findOrFail($id);
-            $relativePath = $emisija->file;
-            $absolutePath = public_path($relativePath); 
-
-    
-            if (!File::exists($absolutePath)) {
-                return response()->json(['error' => 'Fajl ne postoji'], 404);
-            }
-    
-           
-            return response()->stream(function () use ($absolutePath) {
-                readfile($absolutePath);
-            }, 200, [
-                'Content-Type' => $emisija->tip,
-                'Accept-Ranges' => 'bytes',
-                'Content-Length' => filesize($absolutePath),
-            ]);
-        } catch (\Exception $e) {
-            Log::error('Greška prilikom učitavanja file: ' . $e->getMessage());
-            return response()->json(['error' => 'Došlo je do greške prilikom učitavanja file.'], 500);
+public function vratiFile($id)
+{
+    try {
+        $emisija = Emisija::findOrFail($id);
+        if (filter_var($emisija->file, FILTER_VALIDATE_URL)) {
+             return redirect($emisija->file);
         }
+
+        return response()->json(['error' => 'Fajl ne postoji ili nije validan URL'], 404);
+
+    } catch (\Exception $e) {
+        Log::error('Greška prilikom učitavanja file: ' . $e->getMessage());
+        return response()->json(['error' => 'Došlo je do greške.'], 500);
     }
+}
 
 
 }
