@@ -12,11 +12,13 @@ const PodcastDetails = () => {
   const [podcast, setPodcast] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const fallbackImage = "/default-image.jpg";
- const user = {
+  const user = {
     role: localStorage.getItem("role"),
     username: localStorage.getItem("username"),
   };
+
+  const fallbackImage = "/default-image.jpg";
+
   useEffect(() => {
     const fetchPodcast = async () => {
       try {
@@ -31,7 +33,7 @@ const PodcastDetails = () => {
     fetchPodcast();
   }, [id]);
 
-   const isOwner = podcast?.autori?.some(
+  const isOwner = podcast?.autori?.some(
     (a) => a.korisnicko_ime === user.username
   );
   const canDelete = user.role === "administrator" || isOwner;
@@ -48,8 +50,6 @@ const PodcastDetails = () => {
       }
     }
   };
-  
-
 
   if (loading)
     return (
@@ -81,10 +81,6 @@ const PodcastDetails = () => {
         <img
           src={podcast.logo_putanja}
           alt=""
-           onError={(e) => {
-                e.target.onerror = null;
-                e.target.src = fallbackImage;
-              }}
           className="absolute inset-0 w-full h-full object-cover opacity-20 blur-2xl scale-110"
         />
 
@@ -100,7 +96,7 @@ const PodcastDetails = () => {
             <img
               src={podcast.logo_putanja}
               alt={podcast.naslov}
-               onError={(e) => {
+              onError={(e) => {
                 e.target.onerror = null;
                 e.target.src = fallbackImage;
               }}
@@ -124,34 +120,29 @@ const PodcastDetails = () => {
 
             {canDelete && (
               <>
-              <button
-                onClick={handleDelete}
-                className="mb-4 px-6 py-3 bg-red-600/20 hover:bg-red-600 border border-red-600/50 text-red-100 rounded-2xl backdrop-blur-md transition-all flex items-center gap-2 font-bold group"
-              >
-                <svg
-                  className="w-5 h-5 text-red-400 group-hover:text-white"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+                <button
+                  onClick={handleDelete}
+                  className="mb-4 px-6 py-3 bg-red-600/20 hover:bg-red-600 border border-red-600/50 text-red-100 rounded-2xl backdrop-blur-md transition-all flex items-center gap-2 font-bold group"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                  />
-                </svg>
-                Obriši podkast
-              </button>
-               <button
+                  Obriši podkast
+                </button>
+                <button
                   onClick={() => navigate(`/podcasts/${id}/update`)}
                   className="mb-4 px-6 py-3 bg-amber-500/10 hover:bg-amber-500 border border-amber-500/40 text-amber-200 hover:text-white rounded-2xl backdrop-blur-md transition-all duration-300 flex items-center gap-2 font-bold group shadow-[0_0_15px_rgba(245,158,11,0.1)] hover:shadow-[0_0_20px_rgba(245,158,11,0.4)]"
                 >
                   Izmeni podkast
                 </button>
-                </>
+              </>
             )}
-            
+
+            {isOwner && (
+              <button
+                onClick={() => navigate(`/podcasts/${id}/add-episode`)}
+                className="mb-4 px-6 py-3 bg-indigo-500/10 hover:bg-indigo-600 border border-indigo-500/40 text-indigo-200 hover:text-white rounded-2xl backdrop-blur-md transition-all duration-300 flex items-center gap-2 font-bold group shadow-[0_0_15px_rgba(99,102,241,0.1)] hover:shadow-[0_0_20px_rgba(99,102,241,0.4)]"
+              >
+                Dodaj Epizodu
+              </button>
+            )}
           </div>
         </div>
       </div>

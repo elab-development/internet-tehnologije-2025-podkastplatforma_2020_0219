@@ -8,6 +8,7 @@ import PodcastForm from "./pages/PodcastForm";
 import CategoryManagement from "./pages/CategoryManagement";
 import Statistics from "./pages/Statistics";
 import UserManagement from "./pages/UserManagement";
+import AddEpisodeForm from "./pages/AddEpisodeForm";
 
 function App() {
   return (
@@ -28,6 +29,10 @@ function App() {
           <Route path="*" element={<Login />} />
           <Route path="/statistics" element={<Statistics />} />
            <Route path="/users" element={<UserManagement />} />
+            <Route
+            path="/podcasts/:id/add-episode"
+            element={<AddEpisodeForm />}
+          />
         </Routes>
       </div>
     </Router>
