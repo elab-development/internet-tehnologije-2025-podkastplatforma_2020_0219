@@ -24,6 +24,10 @@ export default function Navigation() {
     linksToDisplay.push({ name: "Kreiraj Podkast", path: "/create-podcast" });
   }
 
+   if (userRole === "gledalac") {
+    linksToDisplay.push({ name: "Spotify", path: "/spotify" });
+  }
+
 
 
   const handleLogoutAction = async () => {

@@ -9,7 +9,7 @@ import CategoryManagement from "./pages/CategoryManagement";
 import Statistics from "./pages/Statistics";
 import UserManagement from "./pages/UserManagement";
 import AddEpisodeForm from "./pages/AddEpisodeForm";
-
+import Spotify from "./components/spotify/Spotify";
 function App() {
   return (
     <Router>
@@ -33,6 +33,8 @@ function App() {
             path="/podcasts/:id/add-episode"
             element={<AddEpisodeForm />}
           />
+
+             <Route path="/spotify" element={<Spotify />} />
         </Routes>
       </div>
     </Router>
