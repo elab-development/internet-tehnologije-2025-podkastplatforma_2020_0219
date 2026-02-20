@@ -5,6 +5,7 @@ const FormSelect = ({
   onChange,
   placeholder,
   required,
+  name
 }) => {
   return (
     <div className="space-y-2">
@@ -14,6 +15,7 @@ const FormSelect = ({
       <select
         required={required}
         value={value}
+        name={name}
         onChange={onChange}
         className="w-full px-6 py-4 bg-gray-50 rounded-2xl border-none focus:ring-2 focus:ring-indigo-500 font-bold appearance-none text-gray-900"
       >
