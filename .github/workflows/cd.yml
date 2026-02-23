@@ -35,4 +35,32 @@ jobs:
       - name: Run tests
         run: php artisan test
 
- 
+  build-and-push:
+    name: Build & push Docker images
+    needs: tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: olimpijada72
+          password: ${{ secrets.MOJ_GHCR_PAT }}
+
+      - name: Build & push backend image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./back
+          push: true
+          tags: ghcr.io/olimpijada72/podkast-backend:latest
+
+      - name: Build & push frontend image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./front
+          push: true
+          tags: ghcr.io/olimpijada72/podkast-frontend:latest 
