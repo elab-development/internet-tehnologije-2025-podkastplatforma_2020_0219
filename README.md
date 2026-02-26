@@ -156,3 +156,5 @@ Za lokalno pokretanje potrebno je imati instalirano:
 - Node.js  
 - npm  
 - Docker (opciono)
+
+ovo je test - obriši ovu liniju
